@@ -13,30 +13,25 @@ object PriceBasket {
 
     val itemsWithPrices = Pricer.getItemsAndPrices(items, pas.prices)
 
-    val itemsWithSomeAdjustedPrices = Pricer.adjustPrices(itemsWithPrices, pas.adjustments)
+    val itemsWithAdjustedPrices = Pricer.adjustPrices(itemsWithPrices, pas.adjustments)
 
-    printInvoice(itemsWithPrices, itemsWithSomeAdjustedPrices)
+    printInvoice(itemsWithAdjustedPrices)
   }
 
-  def printInvoice(itemsWithPrices: List[(String, Double)], itemsWithAdjustedPrices: List[Price]): Unit = {
+  def printInvoice(prices: List[Price]): Unit = {
 
-    // Saad: we can also explicitly use Locale.UK
-    val formatter = java.text.NumberFormat.getCurrencyInstance()
-    val subTotal = itemsWithPrices.map(_._2).sum
-    val total = itemsWithAdjustedPrices.map(_.price).sum
-    val discountsPrices = itemsWithAdjustedPrices.filter(!_.message.isEmpty)
-      .foldLeft(collection.mutable.Map[String, Double]()) { (map, price) =>
-        map += map.get(price.message).map { x =>
-          price.message -> (x + price.discount)
-        }
-          .getOrElse(price.message -> price.discount)
-      }
-    println("Subtotal: " + formatter.format(subTotal / 100.0))
-    if (discountsPrices.isEmpty)
+    val subTotal = Pricer.getSubTotal(prices)
+    //prices.foreach(println(_))
+
+    val messageAndDiscounts = Pricer.getMessageAndDiscounts(prices)
+    println("Subtotal: £" + f"${subTotal / 100.0}%1.2f")
+    if (messageAndDiscounts.isEmpty)
       println("No offers available")
     else
-      discountsPrices.foreach(dp => println(s"${dp._1} :" + formatter.format(dp._2 / 100)))
-    println("Total price: " + formatter.format(total / 100.0))
+      messageAndDiscounts.foreach(dp => println(s"${dp._1}: £" + f"${dp._2 / 100.0}%1.2f"))
+
+    val discounts = Pricer.getDiscounts(prices).sum
+    println("Total price: £" + f"${(subTotal - discounts) / 100.0}%1.2f")
   }
 
 }

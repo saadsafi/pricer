@@ -7,12 +7,12 @@
   },
   "adjustments": [
     {
-      "condition": {"Apples": "1"},
+      "conditions": {"Apples": "1"},
       "discount": {"Apples": "10"},
       "message": "Apples 10% off"
     },
     {
-      "condition": {"Soup": "2", "Bread": 1},
+      "conditions": {"Soup": "2"},
       "discount": {"Bread": "50"},
       "message": "Buy 2 tins of soup and get a loaf of bread for half price"
     }

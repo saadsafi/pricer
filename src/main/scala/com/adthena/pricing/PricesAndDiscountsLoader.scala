@@ -6,10 +6,6 @@ import argonaut.Argonaut._
 import argonaut._
 
 
-case class Adjustment(condition: Map[String, Int], discount: Map[String, Double], message: String)
-
-case class PAs(prices: Map[String, Double], adjustments: List[Adjustment])
-
 object PricesAndDiscountsLoader {
 
   private val PRICES_FILE_PATH = "src/main/resources/current_prices.json"
@@ -21,7 +17,7 @@ object PricesAndDiscountsLoader {
     val json = Source.fromFile(filePath).getLines.mkString
 
     implicit def codecAdjustment: CodecJson[Adjustment] =
-      casecodec3(Adjustment.apply, Adjustment.unapply)("condition", "discount", "message")
+      casecodec3(Adjustment.apply, Adjustment.unapply)("conditions", "discount", "message")
 
     implicit def codecPAs: CodecJson[PAs] =
       casecodec2(PAs.apply, PAs.unapply)("prices", "adjustments")

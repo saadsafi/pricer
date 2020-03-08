@@ -1,0 +1,27 @@
+{
+  "prices": {
+    "Soup": "65",
+    "Bread": "80",
+    "Milk": "130",
+    "Pears": "90",
+    "Bananas": "120",
+    "Apples": "100"
+  },
+  "adjustments": [
+    {
+      "conditions": {"Bananas": "1"},
+      "discount": {"Bananas": "25"},
+      "message": "Bananas 25% off"
+    },
+    {
+      "conditions": {"Apples": "2"},
+      "discount": {"Bread": "50"},
+      "message": "Buy 2 Apples and get a loaf of bread for half price"
+    },
+    {
+      "conditions": {"Milk": "3", "Pears": 2},
+      "discount": {"Apples": "30"},
+      "message": "Buy 3 Milk and 2 Pears and get Apples 30% off"
+    }
+  ]
+}
